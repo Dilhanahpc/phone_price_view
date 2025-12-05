@@ -1,0 +1,90 @@
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy.orm import Session
+from sqlalchemy import desc
+from app.database import get_db
+from app import models, schemas
+
+router = APIRouter()
+
+@router.get("/", response_model=list[schemas.ShopPrice])
+async def get_prices(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(10, ge=1, le=100),
+    phone_id: int = Query(None),
+    shop_id: int = Query(None),
+    db: Session = Depends(get_db)
+):
+    """Get prices with optional filtering by phone_id or shop_id"""
+    query = db.query(models.ShopPrice)
+    
+    if phone_id:
+        query = query.filter(models.ShopPrice.phone_id == phone_id)
+    if shop_id:
+        query = query.filter(models.ShopPrice.shop_id == shop_id)
+    
+    prices = query.offset(skip).limit(limit).all()
+    return prices
+
+@router.get("/{price_id}", response_model=schemas.ShopPrice)
+async def get_price(price_id: int, db: Session = Depends(get_db)):
+    """Get a specific price by ID"""
+    price = db.query(models.ShopPrice).filter(models.ShopPrice.id == price_id).first()
+    if not price:
+        raise HTTPException(status_code=404, detail="Price not found")
+    return price
+
+@router.post("/", response_model=schemas.ShopPrice)
+async def create_price(price: schemas.ShopPriceCreate, db: Session = Depends(get_db)):
+    """Create a new price entry"""
+    # Verify phone and shop exist
+    phone = db.query(models.Phone).filter(models.Phone.id == price.phone_id).first()
+    shop = db.query(models.Shop).filter(models.Shop.id == price.shop_id).first()
+    
+    if not phone:
+        raise HTTPException(status_code=404, detail="Phone not found")
+    if not shop:
+        raise HTTPException(status_code=404, detail="Shop not found")
+    
+    db_price = models.ShopPrice(**price.model_dump())
+    db.add(db_price)
+    db.commit()
+    db.refresh(db_price)
+    return db_price
+
+@router.put("/{price_id}", response_model=schemas.ShopPrice)
+async def update_price(price_id: int, price: schemas.ShopPriceCreate, db: Session = Depends(get_db)):
+    """Update a price entry"""
+    db_price = db.query(models.ShopPrice).filter(models.ShopPrice.id == price_id).first()
+    if not db_price:
+        raise HTTPException(status_code=404, detail="Price not found")
+    
+    for key, value in price.model_dump().items():
+        setattr(db_price, key, value)
+    
+    db.commit()
+    db.refresh(db_price)
+    return db_price
+
+@router.delete("/{price_id}")
+async def delete_price(price_id: int, db: Session = Depends(get_db)):
+    """Delete a price entry"""
+    db_price = db.query(models.ShopPrice).filter(models.ShopPrice.id == price_id).first()
+    if not db_price:
+        raise HTTPException(status_code=404, detail="Price not found")
+    
+    db.delete(db_price)
+    db.commit()
+    return {"message": "Price deleted successfully"}
+
+@router.get("/phone/{phone_id}/compare", response_model=list[schemas.ShopPrice])
+async def compare_prices(phone_id: int, db: Session = Depends(get_db)):
+    """Get all prices for a phone across all shops (for price comparison)"""
+    prices = db.query(models.ShopPrice).filter(
+        models.ShopPrice.phone_id == phone_id
+    ).order_by(models.ShopPrice.price).all()
+    
+    if not prices:
+        raise HTTPException(status_code=404, detail="No prices found for this phone")
+    
+    return prices
+
