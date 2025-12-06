@@ -124,3 +124,13 @@ class User(Base):
     
     phone_ratings = relationship("PhoneRating", back_populates="user")
     price_alerts = relationship("PriceAlert", back_populates="user")
+
+class Subscriber(Base):
+    __tablename__ = "subscribers"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String(255), unique=True, index=True, nullable=False)
+    name = Column(String(255), nullable=True)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(TIMESTAMP, nullable=True)
+    updated_at = Column(TIMESTAMP, nullable=True)

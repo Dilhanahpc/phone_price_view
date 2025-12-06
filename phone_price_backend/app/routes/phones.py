@@ -56,3 +56,66 @@ async def delete_phone(phone_id: int, db: Session = Depends(get_db)):
     db.delete(db_phone)
     db.commit()
     return {"message": "Phone deleted successfully"}
+
+@router.get("/{phone_id}/specs")
+async def get_phone_specs(phone_id: int, db: Session = Depends(get_db)):
+    """Get all specifications for a specific phone"""
+    phone = db.query(models.Phone).filter(models.Phone.id == phone_id).first()
+    if not phone:
+        raise HTTPException(status_code=404, detail="Phone not found")
+    
+    specs = db.query(models.Spec).filter(models.Spec.phone_id == phone_id).all()
+    return [{"key": spec.key_name, "value": spec.value} for spec in specs]
+
+@router.post("/{phone_id}/specs")
+async def add_phone_spec(phone_id: int, spec_data: dict, db: Session = Depends(get_db)):
+    """Add a specification to a phone"""
+    phone = db.query(models.Phone).filter(models.Phone.id == phone_id).first()
+    if not phone:
+        raise HTTPException(status_code=404, detail="Phone not found")
+    
+    # Check if spec already exists
+    existing = db.query(models.Spec).filter(
+        models.Spec.phone_id == phone_id,
+        models.Spec.key_name == spec_data.get('key')
+    ).first()
+    
+    if existing:
+        # Update existing spec
+        existing.value = spec_data.get('value')
+        db.commit()
+        db.refresh(existing)
+        return {"key": existing.key_name, "value": existing.value}
+    else:
+        # Create new spec
+        new_spec = models.Spec(
+            phone_id=phone_id,
+            key_name=spec_data.get('key'),
+            value=spec_data.get('value')
+        )
+        db.add(new_spec)
+        db.commit()
+        db.refresh(new_spec)
+        return {"key": new_spec.key_name, "value": new_spec.value}
+
+@router.put("/{phone_id}/specs/bulk")
+async def update_phone_specs_bulk(phone_id: int, specs_data: list[dict], db: Session = Depends(get_db)):
+    """Update multiple specifications for a phone at once"""
+    phone = db.query(models.Phone).filter(models.Phone.id == phone_id).first()
+    if not phone:
+        raise HTTPException(status_code=404, detail="Phone not found")
+    
+    # Delete all existing specs for this phone
+    db.query(models.Spec).filter(models.Spec.phone_id == phone_id).delete()
+    
+    # Add new specs
+    for spec_data in specs_data:
+        new_spec = models.Spec(
+            phone_id=phone_id,
+            key_name=spec_data.get('key'),
+            value=spec_data.get('value')
+        )
+        db.add(new_spec)
+    
+    db.commit()
+    return {"message": "Specifications updated successfully"}

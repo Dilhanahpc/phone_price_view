@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import phones, shops, prices, search, ai_predict
+from app.routes import phones, shops, prices, search, ai_predict, subscribers
 
 app = FastAPI(
     title="Phone Price Backend API",
@@ -23,6 +23,7 @@ app.include_router(shops.router, prefix="/api/shops", tags=["Shops"])
 app.include_router(prices.router, prefix="/api/prices", tags=["Prices"])
 app.include_router(search.router, prefix="/api/search", tags=["Search"])
 app.include_router(ai_predict.router, prefix="/api/ai", tags=["AI Predictions"])
+app.include_router(subscribers.router)
 
 @app.get("/")
 async def root():

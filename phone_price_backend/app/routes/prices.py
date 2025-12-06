@@ -25,13 +25,25 @@ async def get_prices(
     prices = query.offset(skip).limit(limit).all()
     return prices
 
-@router.get("/{price_id}", response_model=schemas.ShopPrice)
-async def get_price(price_id: int, db: Session = Depends(get_db)):
-    """Get a specific price by ID"""
-    price = db.query(models.ShopPrice).filter(models.ShopPrice.id == price_id).first()
-    if not price:
-        raise HTTPException(status_code=404, detail="Price not found")
-    return price
+@router.get("/range", response_model=list[schemas.ShopPrice])
+async def get_phones_by_price_range(
+    min_price: int = Query(..., ge=0, description="Minimum price"),
+    max_price: int = Query(..., ge=0, description="Maximum price"),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=500),
+    db: Session = Depends(get_db)
+):
+    """Get all phones within a price range"""
+    if min_price > max_price:
+        raise HTTPException(status_code=400, detail="min_price cannot be greater than max_price")
+    
+    prices = db.query(models.ShopPrice).filter(
+        models.ShopPrice.price >= min_price,
+        models.ShopPrice.price <= max_price,
+        models.ShopPrice.is_active == True
+    ).offset(skip).limit(limit).all()
+    
+    return prices
 
 @router.post("/", response_model=schemas.ShopPrice)
 async def create_price(price: schemas.ShopPriceCreate, db: Session = Depends(get_db)):
