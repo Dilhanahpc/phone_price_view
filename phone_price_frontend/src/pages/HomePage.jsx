@@ -148,7 +148,7 @@ const HomePage = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Partnered with tomorrow's tech leaders
+              
             </h2>
             <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
               Meet the innovators powering your smarter phone choices. We team up with top brands to bring you the best prices, trusted reviews, and a seamless, future-ready experience so you always stay ahead of the curve.

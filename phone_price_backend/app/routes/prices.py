@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import desc
 from app.database import get_db
 from app import models, schemas
+from app.services.email_service import notify_all_subscribers
 
 router = APIRouter()
 
@@ -70,11 +71,38 @@ async def update_price(price_id: int, price: schemas.ShopPriceCreate, db: Sessio
     if not db_price:
         raise HTTPException(status_code=404, detail="Price not found")
     
+    # Store old price for comparison
+    old_price = db_price.price
+    new_price = price.price
+    
+    # Check if price changed significantly (more than 1% change to avoid minor fluctuations)
+    price_changed = old_price != new_price and abs((new_price - old_price) / old_price) >= 0.01
+    
+    # Get phone and shop details for notification
+    phone = db.query(models.Phone).filter(models.Phone.id == db_price.phone_id).first()
+    shop = db.query(models.Shop).filter(models.Shop.id == db_price.shop_id).first()
+    
+    # Update the price
     for key, value in price.model_dump().items():
         setattr(db_price, key, value)
     
     db.commit()
     db.refresh(db_price)
+    
+    # Send notifications for any significant price change (increase OR decrease)
+    if price_changed and phone and shop:
+        try:
+            phone_name = f"{phone.brand} {phone.model}"
+            shop_name = shop.name
+            success_count, total_subscribers = notify_all_subscribers(
+                db, phone_name, old_price, new_price, shop_name
+            )
+            change_type = "drop" if new_price < old_price else "increase"
+            print(f"📧 Price {change_type} notification sent to {success_count}/{total_subscribers} subscribers")
+        except Exception as e:
+            print(f"⚠️ Failed to send notifications: {e}")
+            # Don't fail the price update if email fails
+    
     return db_price
 
 @router.delete("/{price_id}")

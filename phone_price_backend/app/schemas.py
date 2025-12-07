@@ -48,7 +48,7 @@ class Shop(ShopBase):
 class ShopPriceBase(BaseModel):
     phone_id: int
     shop_id: int
-    price: int
+    price: int  # Using int to match BigInteger database column
     currency: Optional[str] = "LKR"
     is_active: Optional[bool] = True
 

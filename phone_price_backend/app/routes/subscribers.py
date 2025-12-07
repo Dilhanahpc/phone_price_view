@@ -2,9 +2,23 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import Subscriber
-from app.schemas.subscriber import SubscriberCreate, SubscriberResponse
 from app.services.email_service import send_welcome_email
 from typing import List
+from pydantic import BaseModel, EmailStr
+
+# Define schemas inline since schemas.py doesn't have these
+class SubscriberCreate(BaseModel):
+    email: EmailStr
+    name: str = None
+
+class SubscriberResponse(BaseModel):
+    id: int
+    email: str
+    name: str = None
+    is_active: bool
+    
+    class Config:
+        from_attributes = True
 
 router = APIRouter(prefix="/api/subscribers", tags=["subscribers"])
 

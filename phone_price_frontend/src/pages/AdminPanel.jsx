@@ -49,8 +49,15 @@ const AdminPanel = () => {
         const response = await shopsAPI.getAll();
         setShops(response.data || []);
       } else if (activeTab === 'prices') {
-        const response = await pricesAPI.getAll();
-        setPrices(response.data || []);
+        // Fetch prices, phones, and shops for the dropdown
+        const [pricesRes, phonesRes, shopsRes] = await Promise.all([
+          pricesAPI.getAll(),
+          phonesAPI.getAll(0, 100),
+          shopsAPI.getAll()
+        ]);
+        setPrices(pricesRes.data || []);
+        setPhones(phonesRes.data || []);
+        setShops(shopsRes.data || []);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -104,10 +111,19 @@ const AdminPanel = () => {
           await shopsAPI.update(currentItem.id, formData);
         }
       } else if (activeTab === 'prices') {
+        // Convert string values to integers for price data
+        const priceData = {
+          ...formData,
+          phone_id: parseInt(formData.phone_id),
+          shop_id: parseInt(formData.shop_id),
+          price: parseInt(formData.price),
+          is_active: formData.is_active !== undefined ? formData.is_active : true
+        };
+        
         if (modalMode === 'add') {
-          await pricesAPI.create(formData);
+          await pricesAPI.create(priceData);
         } else {
-          await pricesAPI.update(currentItem.id, formData);
+          await pricesAPI.update(currentItem.id, priceData);
         }
       }
       setShowModal(false);
@@ -431,6 +447,11 @@ const PricesTable = ({ data, onEdit, onDelete, phones, shops }) => {
 const Modal = ({ mode, type, item, onSave, onClose, phones, shops }) => {
   const [formData, setFormData] = useState(item || {});
 
+  // Update formData when item changes (important for edit mode)
+  useEffect(() => {
+    setFormData(item || {});
+  }, [item]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave(formData);
@@ -670,7 +691,6 @@ const Modal = ({ mode, type, item, onSave, onClose, phones, shops }) => {
                   onChange={handleChange}
                   required
                   min="0"
-                  step="0.01"
                   className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-400"
                 />
               </div>
