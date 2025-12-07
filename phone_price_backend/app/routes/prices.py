@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, BackgroundTasks
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 from app.database import get_db
@@ -6,6 +6,18 @@ from app import models, schemas
 from app.services.email_service import notify_all_subscribers
 
 router = APIRouter()
+
+def send_notifications_background(db: Session, phone_name: str, old_price: int, new_price: int, shop_name: str):
+    """Background task to send email notifications without blocking the API response"""
+    try:
+        success_count, total_subscribers = notify_all_subscribers(
+            db, phone_name, old_price, new_price, shop_name
+        )
+        change_type = "drop" if new_price < old_price else "increase"
+        print(f"✅ Price {change_type} notification sent to {success_count}/{total_subscribers} subscribers")
+    except Exception as e:
+        print(f"❌ Failed to send notifications in background: {e}")
+
 
 @router.get("/", response_model=list[schemas.ShopPrice])
 async def get_prices(
@@ -65,7 +77,12 @@ async def create_price(price: schemas.ShopPriceCreate, db: Session = Depends(get
     return db_price
 
 @router.put("/{price_id}", response_model=schemas.ShopPrice)
-async def update_price(price_id: int, price: schemas.ShopPriceCreate, db: Session = Depends(get_db)):
+async def update_price(
+    price_id: int, 
+    price: schemas.ShopPriceCreate, 
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db)
+):
     """Update a price entry"""
     db_price = db.query(models.ShopPrice).filter(models.ShopPrice.id == price_id).first()
     if not db_price:
@@ -89,19 +106,17 @@ async def update_price(price_id: int, price: schemas.ShopPriceCreate, db: Sessio
     db.commit()
     db.refresh(db_price)
     
-    # Send notifications for any significant price change (increase OR decrease)
+    # Send notifications in the BACKGROUND (non-blocking)
     if price_changed and phone and shop:
-        try:
-            phone_name = f"{phone.brand} {phone.model}"
-            shop_name = shop.name
-            success_count, total_subscribers = notify_all_subscribers(
-                db, phone_name, old_price, new_price, shop_name
-            )
-            change_type = "drop" if new_price < old_price else "increase"
-            print(f"📧 Price {change_type} notification sent to {success_count}/{total_subscribers} subscribers")
-        except Exception as e:
-            print(f"⚠️ Failed to send notifications: {e}")
-            # Don't fail the price update if email fails
+        phone_name = f"{phone.brand} {phone.model}"
+        shop_name = shop.name
+        
+        # Add email task to background - doesn't block the response!
+        background_tasks.add_task(
+            send_notifications_background,
+            db, phone_name, old_price, new_price, shop_name
+        )
+        print(f"📧 Email notifications queued in background for {phone_name}")
     
     return db_price
 
