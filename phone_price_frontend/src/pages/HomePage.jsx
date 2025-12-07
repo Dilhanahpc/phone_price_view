@@ -403,15 +403,22 @@ const HomePage = () => {
             </div>
             <div>
               <h4 className="text-white font-semibold mb-4">Contact</h4>
-              <p className="text-gray-400 text-sm">support@pricera.lk</p>
+              <a 
+                href="mailto:xenovixsolutions@gmail.com" 
+                className="text-gray-400 text-sm hover:text-indigo-400 transition-colors cursor-pointer inline-block"
+                title="Click to send email"
+              >
+                xenovixsolutions@gmail.com
+              </a>
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 flex flex-wrap justify-between items-center">
             <p className="text-gray-500 text-sm">© 2025 Pricera. All rights reserved.</p>
             <div className="flex space-x-6 text-gray-400 text-sm">
-              <a href="#" className="hover:text-white transition-colors">Dribbble</a>
+              <a href="#" className="hover:text-white transition-colors">Facebook</a>
               <a href="#" className="hover:text-white transition-colors">Instagram</a>
-              <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+              <a href="#" className="hover:text-white transition-colors">Tiktok</a>
+              <a href="#" className="hover:text-white transition-colors">X (twitter)</a>
             </div>
           </div>
         </div>
