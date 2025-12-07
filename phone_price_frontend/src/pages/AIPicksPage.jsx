@@ -8,7 +8,7 @@ const AIPicksPage = () => {
   const [phonesWithPrices, setPhonesWithPrices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 500000 });
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000000 });
   const [sortBy, setSortBy] = useState('recommended');
 
   const categories = ['all', ...getCategories()];
@@ -252,7 +252,7 @@ const AIPicksPage = () => {
                 <input
                   type="range"
                   min="0"
-                  max="500000"
+                  max="1000000"
                   step="10000"
                   value={priceRange.max}
                   onChange={(e) => setPriceRange(prev => ({ ...prev, max: parseInt(e.target.value) }))}
@@ -294,7 +294,7 @@ const AIPicksPage = () => {
             <button
               onClick={() => {
                 setSelectedCategory('all');
-                setPriceRange({ min: 0, max: 500000 });
+                setPriceRange({ min: 0, max: 1000000 });
                 setSortBy('recommended');
               }}
               className="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
