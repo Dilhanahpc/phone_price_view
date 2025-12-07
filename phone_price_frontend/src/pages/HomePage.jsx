@@ -415,10 +415,38 @@ const HomePage = () => {
           <div className="border-t border-gray-800 pt-8 flex flex-wrap justify-between items-center">
             <p className="text-gray-500 text-sm">© 2025 Pricera. All rights reserved.</p>
             <div className="flex space-x-6 text-gray-400 text-sm">
-              <a href="#" className="hover:text-white transition-colors">Facebook</a>
-              <a href="#" className="hover:text-white transition-colors">Instagram</a>
-              <a href="#" className="hover:text-white transition-colors">Tiktok</a>
-              <a href="#" className="hover:text-white transition-colors">X (twitter)</a>
+              <a 
+                href="https://www.facebook.com/profile.php?id=61584418607626" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                Facebook
+              </a>
+              <a 
+                href="https://www.instagram.com/xenovix_solutions?igsh=MmV4dG1qeHdmOWs0" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                Instagram
+              </a>
+              <a 
+                href="https://www.tiktok.com/@xenovix_solutions?_r=1&_t=ZS-921VNn0oUGW" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                Tiktok
+              </a>
+              <a 
+                href="https://x.com/xenovixsolution?t=a0GipLlpPrPPn_l2oziLWA&s=09" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                X (twitter)
+              </a>
             </div>
           </div>
         </div>
