@@ -10,4 +10,5 @@ export default defineConfig({
       },
     }),
   ],
+  base: '/phone_price_view/', // GitHub Pages repository name
 })
