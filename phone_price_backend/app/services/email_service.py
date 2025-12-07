@@ -23,7 +23,8 @@ def send_email(to_email: str, subject: str, html_content: str):
     
     try:
         msg = MIMEMultipart('alternative')
-        msg['From'] = FROM_EMAIL
+        # Set sender name as "Pricera" with the email address
+        msg['From'] = f"Pricera <{FROM_EMAIL}>"
         msg['To'] = to_email
         msg['Subject'] = subject
         

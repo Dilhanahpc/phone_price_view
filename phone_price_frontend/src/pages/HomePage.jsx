@@ -148,7 +148,7 @@ const HomePage = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              
+              Partnered with tomorrow's tech leaders
             </h2>
             <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
               Meet the innovators powering your smarter phone choices. We team up with top brands to bring you the best prices, trusted reviews, and a seamless, future-ready experience so you always stay ahead of the curve.
@@ -162,21 +162,21 @@ const HomePage = () => {
                 <img 
                   src={samsungLogo} 
                   alt="Samsung" 
-                  className="h-8 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
+                  className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
                 />
               </div>
               <div className="flex items-center justify-center p-4 hover:scale-110 transition-transform duration-300">
                 <img 
                   src={appleLogo} 
                   alt="Apple" 
-                  className="h-10 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
+                  className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
                 />
               </div>
               <div className="flex items-center justify-center p-4 hover:scale-110 transition-transform duration-300">
                 <img 
                   src={xiaomiLogo} 
                   alt="Xiaomi" 
-                  className="h-8 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
+                  className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
                 />
               </div>
 
@@ -185,21 +185,21 @@ const HomePage = () => {
                 <img 
                   src={oneplusLogo} 
                   alt="OnePlus" 
-                  className="h-6 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
+                  className="h-10 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
                 />
               </div>
               <div className="flex items-center justify-center p-4 hover:scale-110 transition-transform duration-300">
                 <img 
                   src={oppoLogo} 
                   alt="Oppo" 
-                  className="h-8 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
+                  className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
                 />
               </div>
               <div className="flex items-center justify-center p-4 hover:scale-110 transition-transform duration-300">
                 <img 
                   src={vivoLogo} 
                   alt="Vivo" 
-                  className="h-6 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
+                  className="h-10 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
                 />
               </div>
             </div>
@@ -403,7 +403,7 @@ const HomePage = () => {
             </div>
             <div>
               <h4 className="text-white font-semibold mb-4">Contact</h4>
-              <p className="text-gray-400 text-sm">hello@pricera.com</p>
+              <p className="text-gray-400 text-sm">support@pricera.lk</p>
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 flex flex-wrap justify-between items-center">
