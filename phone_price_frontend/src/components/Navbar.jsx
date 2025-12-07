@@ -9,7 +9,7 @@ const Navbar = () => {
     { name: 'Compare prices', path: '/compare' },
     { name: 'AI picks', path: '/ai-picks' },
     { name: 'About', path: '/about' },
-    { name: 'Blog', path: '/blog' },
+    { name: 'Reviews', path: '/reviews' },
   ];
 
   return (

@@ -134,3 +134,16 @@ class Subscriber(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(TIMESTAMP, nullable=True)
     updated_at = Column(TIMESTAMP, nullable=True)
+
+class Review(Base):
+    __tablename__ = "reviews"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    phone_id = Column(Integer, ForeignKey("phones.id"), index=True, nullable=False)
+    user_name = Column(String(255), nullable=False)
+    rating = Column(Integer, nullable=False)
+    comment = Column(Text, nullable=False)
+    helpful = Column(Integer, default=0)
+    created_at = Column(TIMESTAMP, nullable=True)
+    
+    phone = relationship("Phone", backref="reviews")

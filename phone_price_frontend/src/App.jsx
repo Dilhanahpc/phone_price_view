@@ -6,6 +6,7 @@ import ComparePage from './pages/ComparePage';
 import AIPicksPage from './pages/AIPicksPage';
 import PhoneDetailsPage from './pages/PhoneDetailsPage';
 import AboutPage from './pages/AboutPage';
+import ReviewsPage from './pages/ReviewsPage';
 import AdminPanel from './pages/AdminPanel';
 import AdminLogin from './pages/AdminLogin';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -21,6 +22,7 @@ function App() {
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/ai-picks" element={<AIPicksPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/reviews" element={<ReviewsPage />} />
           <Route path="/phone/:phoneId" element={<PhoneDetailsPage />} />
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route 

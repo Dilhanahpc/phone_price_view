@@ -5,28 +5,28 @@ const AboutPage = () => {
     {
       name: 'Facebook',
       icon: Facebook,
-      url: 'https://facebook.com/xenovix',
+      url: 'https://www.facebook.com/profile.php?id=61584418607626',
       color: 'hover:bg-blue-600',
       bgColor: 'bg-blue-500'
     },
     {
       name: 'Instagram',
       icon: Instagram,
-      url: 'https://instagram.com/xenovix',
+      url: 'https://www.instagram.com/xenovix_solutions?igsh=MmV4dG1qeHdmOWs0',
       color: 'hover:bg-pink-600',
       bgColor: 'bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500'
     },
     {
       name: 'TikTok',
       icon: Music,
-      url: 'https://tiktok.com/@xenovix',
+      url: 'https://www.tiktok.com/@xenovix_solutions?_r=1&_t=ZS-921VNn0oUGW',
       color: 'hover:bg-black',
       bgColor: 'bg-black'
     },
     {
       name: 'X (Twitter)',
       icon: Twitter,
-      url: 'https://x.com/xenovix',
+      url: 'https://x.com/xenovixsolution?t=a0GipLlpPrPPn_l2oziLWA&s=09',
       color: 'hover:bg-gray-900',
       bgColor: 'bg-gray-800'
     }

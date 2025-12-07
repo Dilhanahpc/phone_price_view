@@ -174,3 +174,28 @@ class SearchResponse(BaseModel):
 class PriceComparison(BaseModel):
     phone: Phone
     prices: List[ShopPrice]
+
+# Review Schemas
+class ReviewBase(BaseModel):
+    phone_id: int
+    user_name: str
+    rating: int = Field(..., ge=1, le=5, description="Rating must be between 1 and 5")
+    comment: str
+
+class ReviewCreate(ReviewBase):
+    pass
+
+class ReviewUpdate(BaseModel):
+    helpful: Optional[int] = None
+
+class Review(ReviewBase):
+    id: int
+    helpful: int = 0
+    created_at: Optional[datetime] = None
+    
+    class Config:
+        from_attributes = True
+
+class ReviewWithPhone(Review):
+    phone_name: str
+
