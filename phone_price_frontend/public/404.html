@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricera - Page Not Found</title>
+  <script>
+    // Redirect to the base URL to handle client-side routing
+    const baseUrl = '/phone_price_view/';
+    const path = window.location.pathname.replace(baseUrl, '');
+    window.location.replace(baseUrl + '?' + path);
+  </script>
+</head>
+<body>
+  <h1>Redirecting...</h1>
+</body>
+</html>
