@@ -7,10 +7,32 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Database connection string
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "mysql+pymysql://root:password@localhost:3306/phone_price_db"
-)
+# Railway MySQL provides individual variables, construct the URL
+def get_database_url():
+    # Try Railway-style MySQL variables first
+    mysql_host = os.getenv("MYSQLHOST")
+    mysql_port = os.getenv("MYSQLPORT", "3306")
+    mysql_user = os.getenv("MYSQLUSER", "root")
+    mysql_password = os.getenv("MYSQLPASSWORD")
+    mysql_database = os.getenv("MYSQLDATABASE", "railway")
+    
+    if mysql_host and mysql_password:
+        return f"mysql+pymysql://{mysql_user}:{mysql_password}@{mysql_host}:{mysql_port}/{mysql_database}"
+    
+    # Fallback to DATABASE_URL if provided
+    database_url = os.getenv("DATABASE_URL")
+    if database_url:
+        # Convert postgresql:// to mysql+pymysql:// if needed
+        if database_url.startswith("postgresql://"):
+            database_url = database_url.replace("postgresql://", "mysql+pymysql://", 1)
+        elif database_url.startswith("mysql://"):
+            database_url = database_url.replace("mysql://", "mysql+pymysql://", 1)
+        return database_url
+    
+    # Default fallback for local development
+    return "mysql+pymysql://root:password@localhost:3306/phone_price_db"
+
+DATABASE_URL = get_database_url()
 
 # Create engine with lazy initialization
 try:
