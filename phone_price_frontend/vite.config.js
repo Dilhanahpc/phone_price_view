@@ -10,5 +10,5 @@ export default defineConfig({
       },
     }),
   ],
-  base: '/phone_price_view/', // GitHub Pages repository name
+  base: process.env.NODE_ENV === 'production' ? '/phone_price_view/' : '/',
 })
