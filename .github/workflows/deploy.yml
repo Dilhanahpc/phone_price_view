@@ -26,6 +26,7 @@ jobs:
     - name: Install and Build
       run: |
         cd phone_price_frontend
+        rm -rf node_modules dist
         npm install
         npm run build
       env:
