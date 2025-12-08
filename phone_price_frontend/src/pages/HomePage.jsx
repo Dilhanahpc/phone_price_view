@@ -304,7 +304,7 @@ const HomePage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-6 text-center">
               <p className="text-red-300 mb-2">⚠️ {error}</p>
-              <p className="text-sm text-red-400">Make sure the backend server is running at http://localhost:8000</p>
+              <p className="text-sm text-red-400">Make sure the backend server is running at {import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}</p>
               <button 
                 onClick={fetchData}
                 className="mt-4 bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"

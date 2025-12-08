@@ -9,12 +9,14 @@ const SubscriptionModal = ({ isOpen, onClose }) => {
   const [status, setStatus] = useState('idle'); // idle, loading, success, error
   const [message, setMessage] = useState('');
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('loading');
 
     try {
-      const response = await fetch('http://localhost:8000/api/subscribers/', {
+      const response = await fetch(`${API_BASE_URL}/subscribers/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
