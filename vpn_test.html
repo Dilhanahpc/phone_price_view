@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPN HTTPS Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+        }
+        .success {
+            background: #d4edda;
+            border-left-color: #28a745;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+            color: #721c24;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+            color: #856404;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-green { background: #28a745; }
+        .status-red { background: #dc3545; }
+        .status-yellow { background: #ffc107; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 VPN & HTTPS Compatibility Test</h1>
+        
+        <div class="test-section">
+            <h3>Current Connection Status</h3>
+            <div id="connection-status">Testing...</div>
+        </div>
+
+        <div class="test-section">
+            <h3>Tests</h3>
+            <button onclick="testBackendHTTPS()">Test Backend (HTTPS)</button>
+            <button onclick="testBackendHTTP()">Test Backend (HTTP)</button>
+            <button onclick="testFullFlow()">Test Full Flow</button>
+            <button onclick="location.reload()">Refresh</button>
+        </div>
+
+        <div id="results"></div>
+
+        <div class="test-section warning">
+            <h3>⚠️ If Tests Fail With VPN:</h3>
+            <ul>
+                <li><strong>Option 1:</strong> Disconnect VPN temporarily</li>
+                <li><strong>Option 2:</strong> Add <code>phonepriceview-production.up.railway.app</code> to VPN bypass list</li>
+                <li><strong>Option 3:</strong> Disable "SSL Inspection" or "HTTPS Filtering" in VPN settings</li>
+                <li><strong>Option 4:</strong> Use a different VPN provider</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 Technical Details</h3>
+            <pre id="tech-details">Loading...</pre>
+        </div>
+    </div>
+
+    <script>
+        // Display connection info
+        const techDetails = {
+            'Page Protocol': window.location.protocol,
+            'Page Host': window.location.host,
+            'User Agent': navigator.userAgent,
+            'Language': navigator.language,
+            'Online': navigator.onLine,
+            'Cookies Enabled': navigator.cookieEnabled
+        };
+        document.getElementById('tech-details').textContent = JSON.stringify(techDetails, null, 2);
+
+        // Check if page is loaded over HTTPS
+        if (window.location.protocol === 'https:') {
+            document.getElementById('connection-status').innerHTML = `
+                <span class="status-indicator status-green"></span>
+                <strong>✅ Page loaded over HTTPS</strong> - Mixed content protection is active
+            `;
+        } else {
+            document.getElementById('connection-status').innerHTML = `
+                <span class="status-indicator status-yellow"></span>
+                <strong>⚠️ Page loaded over HTTP</strong> - Mixed content protection may not apply
+            `;
+        }
+
+        function addResult(title, message, type = 'test-section') {
+            const div = document.createElement('div');
+            div.className = `test-section ${type}`;
+            div.innerHTML = `<h3>${title}</h3><p>${message}</p>`;
+            document.getElementById('results').appendChild(div);
+        }
+
+        async function testBackendHTTPS() {
+            document.getElementById('results').innerHTML = '';
+            addResult('🧪 Testing HTTPS Connection', 'Attempting to connect to Railway backend via HTTPS...', 'test-section');
+            
+            try {
+                const startTime = performance.now();
+                const response = await fetch('https://phonepriceview-production.up.railway.app/api/phones/');
+                const endTime = performance.now();
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult(
+                        '✅ HTTPS Test PASSED',
+                        `Successfully connected via HTTPS!<br>
+                        Status: ${response.status}<br>
+                        Response Time: ${(endTime - startTime).toFixed(0)}ms<br>
+                        Phones Loaded: ${data.length || 0}<br>
+                        <strong>Your VPN is NOT blocking HTTPS!</strong>`,
+                        'success'
+                    );
+                } else {
+                    addResult('⚠️ HTTPS Test Warning', `Got response but status ${response.status}`, 'warning');
+                }
+            } catch (error) {
+                addResult(
+                    '❌ HTTPS Test FAILED',
+                    `Error: ${error.message}<br><br>
+                    <strong>This indicates your VPN is blocking HTTPS requests!</strong><br>
+                    Please disconnect VPN or add Railway to bypass list.`,
+                    'error'
+                );
+            }
+        }
+
+        async function testBackendHTTP() {
+            document.getElementById('results').innerHTML = '';
+            addResult('🧪 Testing HTTP Connection', 'Attempting HTTP connection (should be blocked by browser)...', 'test-section');
+            
+            try {
+                const response = await fetch('http://phonepriceview-production.up.railway.app/api/phones/');
+                const data = await response.json();
+                
+                addResult(
+                    '⚠️ HTTP Test Warning',
+                    `HTTP request succeeded - your VPN may be downgrading HTTPS to HTTP!<br>
+                    This is a security risk and causes Mixed Content errors.`,
+                    'warning'
+                );
+            } catch (error) {
+                if (error.message.includes('Mixed Content') || error.message.includes('blocked')) {
+                    addResult(
+                        '✅ Browser Protection Working',
+                        `HTTP request was correctly blocked by browser.<br>
+                        Error: ${error.message}<br>
+                        <strong>This is expected and good!</strong>`,
+                        'success'
+                    );
+                } else {
+                    addResult('❌ HTTP Test Failed', `Unexpected error: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        async function testFullFlow() {
+            document.getElementById('results').innerHTML = '';
+            
+            // Test 1: HTTPS Backend
+            addResult('Test 1/3: Backend HTTPS', 'Testing...', 'test-section');
+            await testBackendHTTPS();
+            
+            // Test 2: Frontend Assets
+            addResult('Test 2/3: Frontend Assets', 'Checking GitHub Pages...', 'test-section');
+            try {
+                const response = await fetch('https://dilhanahpc.github.io/phone_price_view/');
+                if (response.ok) {
+                    addResult('✅ Frontend Accessible', 'GitHub Pages is reachable via HTTPS', 'success');
+                }
+            } catch (error) {
+                addResult('❌ Frontend Error', error.message, 'error');
+            }
+            
+            // Test 3: Cross-Origin
+            addResult('Test 3/3: CORS Test', 'Testing cross-origin request...', 'test-section');
+            try {
+                const response = await fetch('https://phonepriceview-production.up.railway.app/api/phones/', {
+                    headers: {
+                        'Origin': 'https://dilhanahpc.github.io'
+                    }
+                });
+                const data = await response.json();
+                addResult('✅ CORS Working', `Successfully loaded ${data.length} phones from Railway backend`, 'success');
+            } catch (error) {
+                addResult('❌ CORS Failed', `Error: ${error.message}<br>VPN may be interfering with CORS headers`, 'error');
+            }
+        }
+
+        // Auto-run test on load
+        window.onload = () => {
+            setTimeout(testBackendHTTPS, 1000);
+        };
+    </script>
+</body>
+</html>

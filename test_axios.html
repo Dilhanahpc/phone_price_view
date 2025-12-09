@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Axios HTTPS Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Testing Axios with HTTPS</h1>
+    <div id="result"></div>
+
+    <script>
+        const API_BASE_URL = 'https://phonepriceview-production.up.railway.app/api';
+        
+        console.log('🔗 API Base URL:', API_BASE_URL);
+        
+        const api = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            timeout: 15000,
+        });
+        
+        // Log the actual request
+        api.interceptors.request.use(
+            (config) => {
+                console.log('📤 REQUEST CONFIG:', {
+                    baseURL: config.baseURL,
+                    url: config.url,
+                    fullURL: config.baseURL + config.url
+                });
+                return config;
+            },
+            (error) => {
+                console.error('❌ REQUEST ERROR:', error);
+                return Promise.reject(error);
+            }
+        );
+        
+        // Make the request
+        api.get('/phones/')
+            .then(response => {
+                console.log('✅ SUCCESS:', response.data.length, 'phones loaded');
+                document.getElementById('result').innerHTML = `
+                    <h2 style="color: green;">✅ SUCCESS!</h2>
+                    <p>Loaded ${response.data.length} phones</p>
+                    <pre>${JSON.stringify(response.data.slice(0, 2), null, 2)}</pre>
+                `;
+            })
+            .catch(error => {
+                console.error('❌ ERROR:', error);
+                document.getElementById('result').innerHTML = `
+                    <h2 style="color: red;">❌ ERROR!</h2>
+                    <p>${error.message}</p>
+                `;
+            });
+    </script>
+</body>
+</html>

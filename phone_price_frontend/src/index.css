@@ -2,3 +2,163 @@
 @tailwind components;
 @tailwind utilities;
 
+/* iOS Safari Fixes */
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  -webkit-touch-callout: none;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  touch-action: manipulation;
+}
+
+/* Fix iOS Safari button clicks */
+button, 
+a, 
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Fix iOS Safari scrolling */
+.overflow-auto,
+.overflow-y-auto,
+.overflow-x-auto,
+[class*="overflow-"] {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix iOS input zoom issue */
+input,
+textarea,
+select {
+  font-size: 16px !important; /* Prevents zoom on iOS */
+}
+
+/* Fix iOS Safari click delay */
+a,
+button,
+input,
+select,
+textarea,
+label,
+[tabindex] {
+  touch-action: manipulation;
+}
+
+/* Fix iOS Safari active state */
+button:active,
+a:active,
+[role="button"]:active {
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+
+/* Fix flexbox issues on iOS */
+.flex,
+.inline-flex {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+}
+
+/* Prevent iOS text selection on tap */
+.select-none {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+/* iOS Safari active state for all interactive elements */
+@media (hover: none) and (pointer: coarse) {
+  /* This targets touch devices only */
+  
+  button:active,
+  a:active,
+  [role="button"]:active,
+  .cursor-pointer:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+  }
+  
+  /* Remove hover effects on touch devices, use active instead */
+  .hover\:scale-110:active {
+    transform: scale(1.1);
+  }
+  
+  .hover\:bg-indigo-700:active {
+    background-color: rgb(67 56 202);
+  }
+  
+  .hover\:bg-green-700:active {
+    background-color: rgb(21 128 61);
+  }
+  
+  .hover\:bg-white\/10:active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .hover\:border-indigo-500\/50:active {
+    border-color: rgba(99 102 241 / 0.5);
+  }
+  
+  .hover\:shadow-xl:active {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  }
+  
+  /* Enable smooth momentum scrolling on iOS */
+  * {
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* Fix for iOS Safari freezing on transforms */
+* {
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+}
+
+/* Improve iOS button rendering */
+button {
+  -webkit-appearance: button;
+  background-color: transparent;
+  background-image: none;
+}
+
+/* iOS-specific input styling */
+@supports (-webkit-touch-callout: none) {
+  /* This only targets iOS Safari */
+  
+  input,
+  select,
+  textarea {
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+  
+  input[type="search"] {
+    -webkit-appearance: none;
+  }
+  
+  /* Fix iOS Safari button click */
+  button,
+  [role="button"] {
+    cursor: pointer !important;
+  }
+}
