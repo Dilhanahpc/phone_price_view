@@ -1,12 +1,38 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 from app.routes import phones, shops, prices, search, ai_predict, subscribers, reviews
 
 app = FastAPI(
     title="Phone Price Backend API",
     description="API for tracking and predicting phone prices across different shops",
-    version="1.0.0"
+    version="1.0.0",
+    root_path=""
 )
+
+# Middleware to handle Railway proxy headers and enforce HTTPS
+class HTTPSRedirectMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        # Get the X-Forwarded-Proto header from Railway proxy
+        forwarded_proto = request.headers.get("x-forwarded-proto", "")
+        
+        # Force HTTPS scheme in the request
+        if forwarded_proto == "http":
+            # Update the request scope to use HTTPS
+            request.scope["scheme"] = "https"
+        
+        response = await call_next(request)
+        
+        # Add security headers
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        
+        return response
+
+# Add HTTPS redirect middleware FIRST
+app.add_middleware(HTTPSRedirectMiddleware)
 
 # Add CORS middleware
 app.add_middleware(
