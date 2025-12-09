@@ -88,16 +88,24 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20 relative z-10 w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
-            <div className="space-y-8 max-w-2xl">
-              <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.1] tracking-tight">
+            <div className="space-y-6 md:space-y-8 max-w-2xl">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.1] tracking-tight">
                 Your next phone,
                 <br />
                 <span className="text-indigo-400">
                   reimagined
                 </span>
               </h1>
-              <p className="text-lg md:text-xl text-gray-100 leading-relaxed max-w-xl font-normal">
-                Explore, compare, and discover the perfect smartphone for you. Get real-time prices, specs, and AI-powered picks always fresh, always tailored. Welcome to the future of phone shopping in Sri Lanka.
+              <p className="text-base sm:text-lg md:text-xl text-gray-100 leading-relaxed max-w-xl font-normal space-y-1">
+                <span className="block">
+                  Explore, compare, and discover the perfect smartphone for you.
+                </span>
+                <span className="block mt-3">
+                  Get real-time prices, specs, and AI-powered picks—always fresh, always tailored.
+                </span>
+                <span className="block mt-3">
+                  Welcome to the future of phone shopping in Sri Lanka.
+                </span>
               </p>
               <div className="flex flex-wrap gap-4 pt-6 relative z-20">
                 <a 
