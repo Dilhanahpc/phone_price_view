@@ -83,9 +83,9 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-[#0c0020]">
       {/* Hero Section */}
-      <section className="relative overflow-hidden min-h-screen flex items-center bg-[#0c0020]">
+      <section className="relative overflow-hidden bg-[#0c0020]">
         
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20 relative z-10 w-full">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-12 pb-20 md:pt-16 lg:pt-20 relative z-10 w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <div className="space-y-6 md:space-y-8 max-w-2xl">
