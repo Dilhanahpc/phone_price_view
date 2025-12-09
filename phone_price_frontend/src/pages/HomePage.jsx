@@ -83,9 +83,9 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-[#0c0020]">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#0c0020] min-h-[calc(100vh-5rem)] md:min-h-screen flex items-center">
+      <section className="relative overflow-hidden bg-[#0c0020]">
         
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8 md:py-12 lg:pt-20 lg:pb-20 relative z-10 w-full">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-12 pb-20 md:pt-16 lg:pt-20 relative z-10 w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <div className="space-y-6 md:space-y-8 max-w-2xl">
@@ -107,7 +107,7 @@ const HomePage = () => {
                   Welcome to the future of phone shopping in Sri Lanka.
                 </span>
               </p>
-              <div className="flex flex-wrap gap-4 pt-6 relative z-20">
+              <div className="flex flex-wrap gap-4 pt-6 relative z-20 justify-center lg:justify-start">
                 <a 
                   href="/compare"
                   onClick={(e) => {
