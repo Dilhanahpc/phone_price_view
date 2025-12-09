@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+// Production API URL - MUST use HTTPS for GitHub Pages deployment
 // Allow overriding the backend base URL via Vite env var VITE_API_BASE_URL
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+
+console.log('🔗 API Base URL:', API_BASE_URL); // Debug log
 
 const api = axios.create({
   baseURL: API_BASE_URL,
