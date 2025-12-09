@@ -100,44 +100,40 @@ const HomePage = () => {
                 Explore, compare, and discover the perfect smartphone for you. Get real-time prices, specs, and AI-powered picks always fresh, always tailored. Welcome to the future of phone shopping in Sri Lanka.
               </p>
               <div className="flex flex-wrap gap-4 pt-6 relative z-20">
-                <button 
-                  onClick={() => navigate('/compare')}
-                  onTouchStart={(e) => {
-                    e.currentTarget.style.opacity = '0.8';
-                  }}
-                  onTouchEnd={(e) => {
-                    e.currentTarget.style.opacity = '1';
+                <a 
+                  href="/compare"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/compare');
                   }}
                   style={{ 
-                    WebkitTapHighlightColor: 'transparent', 
+                    WebkitTapHighlightColor: 'rgba(79, 70, 229, 0.3)',
                     cursor: 'pointer', 
                     touchAction: 'manipulation',
-                    position: 'relative',
-                    zIndex: 100
+                    display: 'inline-block',
+                    textDecoration: 'none'
                   }}
-                  className="bg-indigo-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-indigo-700 transition-all duration-300 shadow-lg shadow-indigo-600/50 hover:shadow-xl hover:shadow-indigo-600/60 hover:scale-[1.02] active:scale-95"
+                  className="bg-indigo-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-indigo-700 transition-all duration-300 shadow-lg shadow-indigo-600/50 hover:shadow-xl hover:shadow-indigo-600/60 hover:scale-[1.02] active:scale-95 active:opacity-80"
                 >
                   Compare
-                </button>
-                <button 
-                  onClick={() => navigate('/ai-picks')}
-                  onTouchStart={(e) => {
-                    e.currentTarget.style.opacity = '0.8';
-                  }}
-                  onTouchEnd={(e) => {
-                    e.currentTarget.style.opacity = '1';
+                </a>
+                <a 
+                  href="/ai-picks"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/ai-picks');
                   }}
                   style={{ 
-                    WebkitTapHighlightColor: 'transparent', 
+                    WebkitTapHighlightColor: 'rgba(255, 255, 255, 0.1)',
                     cursor: 'pointer', 
                     touchAction: 'manipulation',
-                    position: 'relative',
-                    zIndex: 100
+                    display: 'inline-block',
+                    textDecoration: 'none'
                   }}
-                  className="bg-white/5 backdrop-blur-sm text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-white/20 active:scale-95"
+                  className="bg-white/5 backdrop-blur-sm text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-white/20 active:scale-95 active:opacity-80"
                 >
                   Ask AI
-                </button>
+                </a>
               </div>
             </div>
 
