@@ -99,29 +99,41 @@ const HomePage = () => {
               <p className="text-lg md:text-xl text-gray-100 leading-relaxed max-w-xl font-normal">
                 Explore, compare, and discover the perfect smartphone for you. Get real-time prices, specs, and AI-powered picks always fresh, always tailored. Welcome to the future of phone shopping in Sri Lanka.
               </p>
-              <div className="flex flex-wrap gap-4 pt-6">
+              <div className="flex flex-wrap gap-4 pt-6 relative z-20">
                 <button 
                   onClick={() => navigate('/compare')}
-                  onTouchStart={(e) => e.currentTarget.style.opacity = '0.8'}
+                  onTouchStart={(e) => {
+                    e.currentTarget.style.opacity = '0.8';
+                  }}
                   onTouchEnd={(e) => {
                     e.currentTarget.style.opacity = '1';
-                    e.preventDefault();
-                    navigate('/compare');
                   }}
-                  style={{ WebkitTapHighlightColor: 'transparent', cursor: 'pointer' }}
+                  style={{ 
+                    WebkitTapHighlightColor: 'transparent', 
+                    cursor: 'pointer', 
+                    touchAction: 'manipulation',
+                    position: 'relative',
+                    zIndex: 100
+                  }}
                   className="bg-indigo-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-indigo-700 transition-all duration-300 shadow-lg shadow-indigo-600/50 hover:shadow-xl hover:shadow-indigo-600/60 hover:scale-[1.02] active:scale-95"
                 >
                   Compare
                 </button>
                 <button 
                   onClick={() => navigate('/ai-picks')}
-                  onTouchStart={(e) => e.currentTarget.style.opacity = '0.8'}
+                  onTouchStart={(e) => {
+                    e.currentTarget.style.opacity = '0.8';
+                  }}
                   onTouchEnd={(e) => {
                     e.currentTarget.style.opacity = '1';
-                    e.preventDefault();
-                    navigate('/ai-picks');
                   }}
-                  style={{ WebkitTapHighlightColor: 'transparent', cursor: 'pointer' }}
+                  style={{ 
+                    WebkitTapHighlightColor: 'transparent', 
+                    cursor: 'pointer', 
+                    touchAction: 'manipulation',
+                    position: 'relative',
+                    zIndex: 100
+                  }}
                   className="bg-white/5 backdrop-blur-sm text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-white/20 active:scale-95"
                 >
                   Ask AI
