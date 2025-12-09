@@ -88,7 +88,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-12 pb-20 md:pt-16 lg:pt-20 relative z-10 w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
-            <div className="space-y-6 md:space-y-8 max-w-2xl">
+            <div className="space-y-6 md:space-y-8 max-w-2xl mx-auto lg:mx-0 text-center lg:text-left">
               <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.1] tracking-tight">
                 Your next phone,
                 <br />
@@ -96,7 +96,7 @@ const HomePage = () => {
                   reimagined
                 </span>
               </h1>
-              <p className="text-base sm:text-lg md:text-xl text-gray-100 leading-relaxed max-w-xl font-normal space-y-1">
+              <p className="text-base sm:text-lg md:text-xl text-gray-100 leading-relaxed max-w-xl mx-auto lg:mx-0 font-normal space-y-1">
                 <span className="block">
                   Explore, compare, and discover the perfect smartphone for you.
                 </span>
