@@ -25,13 +25,18 @@ jobs:
         
     - name: Install and Build
       env:
+        NODE_ENV: production
         VITE_API_BASE_URL: https://phonepriceview-production.up.railway.app/api
       run: |
         cd phone_price_frontend
+        echo "Environment: $NODE_ENV"
+        echo "VITE_API_BASE_URL: $VITE_API_BASE_URL"
         rm -rf node_modules dist .vite
         npm cache clean --force
         npm install
         npm run build
+        echo "Build completed. Checking dist files..."
+        ls -la dist/assets/ | head -20
         
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
